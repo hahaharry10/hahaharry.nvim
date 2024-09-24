@@ -58,7 +58,7 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope [b]uffers
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope [h]elp tags' })
 
 -- Window navigation remaps:
-vim.keymap.set('n', '<C-h>', '<C-w>h', { desc = 'Move focus to the left window', noremap = true})
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
@@ -117,3 +117,10 @@ wk.add({
     { "<leader>uf", vim.cmd.UndotreeFocus, desc = "Focus" },
 }, { prefix = "<leader>" })
 vim.cmd.UndotreePersistUndo = true -- HACK: Unsure if this is right, but it seems to work.
+
+-- gitsigns:
+wk.add({
+    mode = {"n", "v"}, -- Enable staging in both normal mode and visual mode.
+    { "<leader>h", group = "Git..." },
+    { "<leader>hs", ":Gitsigns stage_hunk<CR>", desc = "Stage hunk" },
+}, { prefix = "<leader>" })
