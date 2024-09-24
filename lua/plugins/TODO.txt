@@ -1,0 +1,20 @@
+Future Plugins to add:
+    - [X] which-key
+    - [O] autopairs
+    - [ ] gitsigns.nvim
+    - [O] neo-tree
+    - [X] undo-tree
+    - [X] indent_line
+    - [ ] lsp (see kickstart for inspiration)
+    - [ ] mason
+    - [ ] conform.nvim
+    - [ ] nvim-cmp (research)
+    - [X] todo-comments.nvim
+    - [ ] mini.nvim (research)
+
+Future Actions:
+    - [ ] change nvim-sirround to be "<leader>s" and add which-key description.
+    - [ ] Add descriptions to all key remaps for which-key
+    - [X] Change which-key to remove icons.
+    - [X] Change which-key prompts for ToDo-comment search so that "<leader>[n|N]" as description of "Next..." and "Previous..." and the different jump options just describe the jump option.
+    - [ ] Look at undotree's github and further customise plugin.
