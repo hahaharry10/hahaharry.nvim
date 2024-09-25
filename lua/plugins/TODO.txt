@@ -20,5 +20,5 @@ Future Actions:
     - [X] Change which-key to remove icons.
     - [X] Change which-key prompts for ToDo-comment search so that "<leader>[n|N]" as description of "Next..." and "Previous..." and the different jump options just describe the jump option.
     - [ ] Look at undotree's github and further customise plugin.
-    - [ ] make keybindings for gitsigns.nvim plugin
+    - [X] make keybindings for gitsigns.nvim plugin
     - [ ] Add which-key description for mini.surround and mini.splitjoin.
