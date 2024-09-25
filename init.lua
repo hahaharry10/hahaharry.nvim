@@ -120,7 +120,25 @@ vim.cmd.UndotreePersistUndo = true -- HACK: Unsure if this is right, but it seem
 
 -- gitsigns:
 wk.add({
-    mode = {"n", "v"}, -- Enable staging in both normal mode and visual mode.
-    { "<leader>h", group = "Git..." },
-    { "<leader>hs", ":Gitsigns stage_hunk<CR>", desc = "Stage hunk" },
+    {
+        mode = {"n"},
+        { "<leader>h", group = "Git..." },
+        { "<leader>hs", ":Gitsigns stage_hunk<CR>", desc = "[s]tage hunk" },
+        { "<leader>hu", ":Gitsigns undo_stage_hunk<CR>", desc = "[u]nstage hunk" },
+        { "<leader>hr", ":Gitsigns reset_hunk<CR>", desc = "[r]eset hunk" },
+        { "<leader>hS", ":Gitsigns stage_buffer<CR>", desc = "[S]tage buffer" },
+        { "<leader>hR", ":Gitsigns reset_buffer<CR>", desc = "[R]eset buffer" },
+        { "<leader>hp", ":Gitsigns preview_hunk<CR>", desc = "[p]review hunk" },
+        { "<leader>hb", ":Gitsigns blame_line<CR>", desc = "[b]lame line" },
+        { "<leader>hd", ":Gitsigns diffthis<CR>", desc = "[d]iff to most recent stage" },
+        { "<leader>hD", function() require("gitsigns").diffthis('~') end, desc = "[D]iff to most recent commit" },
+        { "<leader>ht", ":Gitsigns toggle_deleted<CR>", desc = "[t]oggle deleted" },
+    },
+    {
+        mode = {"v"},
+        { "<leader>h", group = "Git..." },
+        { "<leader>hs", function() require("gitsigns").stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, desc = "[s]tage selection" },
+        { "<leader>hr", function() require("gitsigns").reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, desc = "[r]eset selection" },
+    },
 }, { prefix = "<leader>" })
+
