@@ -50,13 +50,6 @@ vim.schedule(function()
     vim.opt.clipboard = 'unnamedplus'
 end)
 
-local builtin = require('telescope.builtin')
--- Telescope remaps:
-vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Fuzzy find [f]iles' })
-vim.keymap.set('n', '<leader>fg', function() builtin.grep_string({ search = vim.fn.input("Grep > ") }) end, { desc = 'Fuzzy live [g]rep' })
-vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope [b]uffers' })
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope [h]elp tags' })
-
 -- Window navigation remaps:
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
@@ -66,19 +59,35 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Remap :Ex to "<leader>e"
 vim.keymap.set('n', '<leader>e', ':Ex<enter>', { desc = 'Enter directory', noremap = true })
 
--- Todo-comment ramaps: 
-kw_td = { "TODO:" }
-kw_fx = { "FIXME:", "BUG:", "ISSUE:", "ERROR:" }
-kw_w  = { "WARNING:" }
-kw_fx_w = { "FIXME:", "BUG:", "ISSUE:", "ERROR:", "WARNING:" }
-kw_hk = { "HACK:" }
-kw_t = { "TEST:" }
-kw_p = { "PASSED:" }
-kw_f = { "FAILED:" }
-kw_p_f = { "PASSED:", "FAILED:" }
 
 local wk = require("which-key")
+local tele = require("telescope.builtin")
+local todo = require("todo-comments")
+
+-- Todo-comment keyword combos: 
+local kw_td = { "TODO:" }
+local kw_e = { "FIXME:", "BUG:", "ISSUE:", "ERROR:" }
+local kw_w = { "WARNING:" }
+local kw_fx_w = { "FIXME:", "BUG:", "ISSUE:", "ERROR:", "WARNING:" }
+local kw_hk = { "HACK:" }
+local kw_t = { "TEST:" }
+local kw_p = { "PASSED:" }
+local kw_f = { "FAILED:" }
+local kw_p_f = { "PASSED:", "FAILED:" }
+
+
 wk.add({
+    -- telescope:
+    {
+        mode = {"n"},
+        { "<leader>f", group = "Find..." },
+        { "<leader>ff", tele.find_files, desc = "Fuzzy find [f]iles" },
+        { "<leader>fg", function() tele.grep_string({ search = vim.fn.input("Grep > ") }) end, desc = "Fuzzy live [g]rep" },
+        { "<leader>fb",  tele.buffers, desc = "Telescope [b]uffers" },
+        { "<leader>fh",  tele.help_tags, desc = "Telescope [h]elp tags" },
+    },
+
+    -- todo-comments:
     {
         mode = {"n"},
         { "<leader>n", group = "Next..." },
@@ -107,19 +116,16 @@ wk.add({
         { "<leader>po", function() require("todo-comments").jump_prev({ keywords = kw_p_f }) end, desc = "PASSED or FAILED comment" },
         { "<leader>pa", function() require("todo-comments").jump_prev() end, desc = "highlighted comment" },
     },
-}, { prefix = "<leader>" })
 
--- undotree:
-wk.add({
-    mode = {"n"},
-    { "<leader>u", group = "Undo-Tree" },
-    { "<leader>ut", vim.cmd.UndotreeToggle, desc = "Toggle" },
-    { "<leader>uf", vim.cmd.UndotreeFocus, desc = "Focus" },
-}, { prefix = "<leader>" })
-vim.cmd.UndotreePersistUndo = true -- HACK: Unsure if this is right, but it seems to work.
+    -- undotree:
+    {
+        mode = {"n"},
+        { "<leader>u", group = "Undo-Tree" },
+        { "<leader>ut", vim.cmd.UndotreeToggle, desc = "Toggle" },
+        { "<leader>uf", vim.cmd.UndotreeFocus, desc = "Focus" },
+    },
 
--- gitsigns:
-wk.add({
+    -- gitsigns:
     {
         mode = {"n"},
         { "<leader>h", group = "Git..." },
@@ -140,17 +146,20 @@ wk.add({
         { "<leader>hs", function() require("gitsigns").stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end, desc = "[s]tage selection" },
         { "<leader>hr", function() require("gitsigns").reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end, desc = "[r]eset selection" },
     },
+
+    -- mini.surround:
+    {
+        mode = {"n", "v"},
+        { "<leader>s", group = "Surround..." },
+        -- NOTE: All keymappings are in ./lua/plugins/mini.lua
+    },
+
+    -- mini.splitjoin:
+    {
+        mode = {"n", "v"},
+        {"<leader><CR>", function() require("mini.splitjoin").toggle() end, desc = "Toggle splitjoin" },
+    }
 }, { prefix = "<leader>" })
 
--- mini.surround:
-wk.add({
-    mode = {"n", "v"},
-    { "<leader>s", group = "Surround..." },
-    -- All keymappings are in ./lua/plugins/mini.lua
-}, { prefix = "<leader>" })
+vim.cmd.UndotreePersistUndo = true -- HACK: Unsure if this is right, but it seems to work.
 
--- mini.splitjoin:
-wk.add({
-    mode = {"n", "v"},
-    {"<leader><CR>", function() require("mini.splitjoin").toggle() end, desc = "Toggle splitjoin" },
-}, { prefix = "<leader>" })
