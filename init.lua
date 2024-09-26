@@ -53,7 +53,7 @@ end)
 local builtin = require('telescope.builtin')
 -- Telescope remaps:
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Fuzzy find [f]iles' })
-vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Fuzzy live [g]rep' })
+vim.keymap.set('n', '<leader>fg', function() builtin.grep_string({ search = vim.fn.input("Grep > ") }) end, { desc = 'Fuzzy live [g]rep' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope [b]uffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope [h]elp tags' })
 
@@ -142,3 +142,15 @@ wk.add({
     },
 }, { prefix = "<leader>" })
 
+-- mini.surround:
+wk.add({
+    mode = {"n", "v"},
+    { "<leader>s", group = "Surround..." },
+    -- All keymappings are in ./lua/plugins/mini.lua
+}, { prefix = "<leader>" })
+
+-- mini.splitjoin:
+wk.add({
+    mode = {"n", "v"},
+    {"<leader><CR>", function() require("mini.splitjoin").toggle() end, desc = "Toggle splitjoin" },
+}, { prefix = "<leader>" })
