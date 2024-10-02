@@ -51,10 +51,19 @@ vim.schedule(function()
 end)
 
 -- Window navigation remaps:
+vim.keymap.set('n', 'j', 'gj', { noremap = true  })
+vim.keymap.set('n', 'k', 'gk', { noremap = true  })
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Terminal Remaps:
+vim.keymap.set('t', '<Esc>', [[<C-\><C-N>]], { noremap = true })
+vim.keymap.set('t', '<C-h>', [[<C-\><C-N><C-w>h]], { noremap = true })
+vim.keymap.set('t', '<C-j>', [[<C-\><C-N><C-w>j]], { noremap = true })
+vim.keymap.set('t', '<C-k>', [[<C-\><C-N><C-w>k]], { noremap = true })
+vim.keymap.set('t', '<C-l>', [[<C-\><C-N><C-w>l]], { noremap = true })
 
 -- Remap :Ex to "<leader>e"
 vim.keymap.set('n', '<leader>e', ':Ex<enter>', { desc = 'Enter directory', noremap = true })
@@ -158,7 +167,21 @@ wk.add({
     {
         mode = {"n", "v"},
         {"<leader><CR>", function() require("mini.splitjoin").toggle() end, desc = "Toggle splitjoin" },
-    }
+    },
+
+    -- Full Screen Execute mode:
+    {
+        mode = {"n"},
+        {"<leader>x", ":<C-f>", desc = "Enter e[x]ecute mode" },
+    },
+
+    -- Terminal Emulator Options:
+    {
+        mode = {"n"},
+        {"<leader>t", group = "[T]erminal emulator..." },
+        {"<leader>tv", ":vs | terminal<CR>", desc = "[v]ertical split" },
+        {"<leader>th", ":split | terminal<CR>", desc = "[h]orizontal split" },
+    },
 }, { prefix = "<leader>" })
 
 vim.cmd.UndotreePersistUndo = true -- HACK: Unsure if this is right, but it seems to work.
