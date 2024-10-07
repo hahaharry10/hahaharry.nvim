@@ -68,6 +68,9 @@ vim.keymap.set('t', '<C-l>', [[<C-\><C-N><C-w>l]], { noremap = true })
 -- Remap :Ex to "<leader>e"
 vim.keymap.set('n', '<leader>e', ':Ex<enter>', { desc = 'Enter directory', noremap = true })
 
+vim.keymap.set('n', 'z', '<C-d>', { desc = 'Down half a page', noremap = true })
+vim.keymap.set('n', 'Z', '<C-u>', { desc = 'Up half a page', noremap = true })
+vim.o.timeoutlen = 0
 
 local wk = require("which-key")
 local tele = require("telescope.builtin")
