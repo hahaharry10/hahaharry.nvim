@@ -175,7 +175,7 @@ wk.add({
     -- Full Screen Execute mode:
     {
         mode = {"n"},
-        {"<leader>x", ":<C-f>", desc = "Enter e[x]ecute mode" },
+        {":", "q:a", desc = "Enter e[x]ecute mode" },
     },
 
     -- Terminal Emulator Options:
