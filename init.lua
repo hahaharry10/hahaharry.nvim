@@ -70,6 +70,8 @@ vim.keymap.set('n', '<leader>e', ':Ex<enter>', { desc = 'Enter directory', norem
 
 vim.keymap.set('n', 'z', '<C-d>', { desc = 'Down half a page', noremap = true })
 vim.keymap.set('n', 'Z', '<C-u>', { desc = 'Up half a page', noremap = true })
+vim.keymap.set('x', 'z', '<C-d>', { desc = 'Down half a page', noremap = true })
+vim.keymap.set('x', 'Z', '<C-u>', { desc = 'Up half a page', noremap = true })
 vim.o.timeoutlen = 0
 
 local wk = require("which-key")
