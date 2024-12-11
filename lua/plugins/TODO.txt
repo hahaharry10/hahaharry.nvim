@@ -23,3 +23,7 @@ Future Actions:
     - [X] make keybindings for gitsigns.nvim plugin
     - [X] Add which-key description for mini.surround and mini.splitjoin.
     - [X] fix find by Grep bug. SOLUTION: Needed to install ripgrep on system and add as telescope dependency.
+
+Research or Create Feature:
+    - [ ] Add sidebar that allows jumping to each function (if using procedural languages) or method (if using object-oriented languages).
+        - Similar to software Finneaz uses (psychopy).
