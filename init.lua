@@ -1,3 +1,6 @@
+-- Search down into subdirectories (for autocompletion)
+vim.opt.path = vim.opt.path + "**"
+
 -- Numbering:
 vim.opt.number = true
 vim.opt.relativenumber = true
