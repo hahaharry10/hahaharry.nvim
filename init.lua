@@ -185,10 +185,20 @@ wk.add({
 
     -- Terminal Emulator Options:
     {
-        mode = {"n"},
+        mode = {"n", "v"},
         {"<leader>t", group = "[T]erminal emulator..." },
         {"<leader>tv", ":vs | terminal<CR>", desc = "[v]ertical split" },
         {"<leader>th", ":split | terminal<CR>", desc = "[h]orizontal split" },
+    },
+
+    -- Allow focus on selected text:
+    {
+        mode = {"v"},
+        {"<leader>l", function() require("focus"):focus_visual_selection() end, desc = "Focus Selection"},
+    },
+    {
+        mode = {"n"},
+        {"<leader>l", function() require("focus"):unfocus() end, desc = "Unfocus text" },
     },
 }, { prefix = "<leader>" })
 
