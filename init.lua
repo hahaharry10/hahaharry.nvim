@@ -91,6 +91,7 @@ local kw_t = { "TEST:" }
 local kw_p = { "PASSED:" }
 local kw_f = { "FAILED:" }
 local kw_p_f = { "PASSED:", "FAILED:" }
+local kw_q = { "QUESTION:" }
 
 -- TODO: Add ccls lsp instead of clangd.
 -- Below is taken from https://github.com/Aumnescio/dotfiles/blob/c647e3a73150af8eb0eb0713cda2667f11c07571/nvim/init.lua#L1228
@@ -180,6 +181,7 @@ wk.add({
         { "<leader>np", function() require("todo-comments").jump_next({ keywords = kw_p }) end, desc = "PASSED comment" },
         { "<leader>nf", function() require("todo-comments").jump_next({ keywords = kw_f }) end, desc = "FAILED comment" },
         { "<leader>no", function() require("todo-comments").jump_next({ keywords = kw_p_f }) end, desc = "PASSED or FAILED comment" },
+        { "<leader>nq", function() require("todo-comments").jump_next({ keywords = kw_q }) end, desc = "QUESTION comment" },
         { "<leader>na", function() require("todo-comments").jump_next() end, desc = "highlighted comment" },
     },
     {

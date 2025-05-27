@@ -10,13 +10,31 @@ return {
                 color = "error",
                 alt = { "FIXME:", "BUG:", "ISSUE:", "ERROR:" },
             },
+            -- TODO: Do this...
             TODO_ = { color = "info", alt = { "TODO:" } },
+
+            -- HACK: This is a hack job.
+            -- WARNING: I warn you of this.
             HACK_ = { color = "warning", alt = { "HACK:" } },
             WARNING_ = { color = "warning", alt = { "WARNING:" } },
+
+            -- NOTE: This is a note.
             NOTE_ = { color = "hint", alt = { "NOTE:" } },
+
+            -- TEST: This is a test.
             TEST_ = { color = "test", alt = { "TEST:" } },
+
+            -- PASSED: This test has passed.
             PASSED_ = { color = "#32CD32", alt = { "PASSED:" } },
-            FAILED_ = { color = "#D22B2B", alt = { "FAILED:" } },
+
+            -- FAILED: This test has failed.
+            FAILED_ = { color = "#a40000", alt = { "FAILED:" } },
+
+
+            -- QUESTION: I have a question.
+            QUESTION_ = { color = "#ff5ccd", alt = { "QUESTION:"} },
+
+            -- BUG:
         },
         gui_style = {
             fg = "NONE", -- The gui style to use for the fg highlight group.

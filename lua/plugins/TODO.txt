@@ -23,7 +23,7 @@ Future Actions:
     - [X] make keybindings for gitsigns.nvim plugin
     - [X] Add which-key description for mini.surround and mini.splitjoin.
     - [X] fix find by Grep bug. SOLUTION: Needed to install ripgrep on system and add as telescope dependency.
-    - [ ] Add a 'QUESTION:' comment highlight (used for questions on the POD codebase.
+    - [X] Add a 'QUESTION:' comment highlight (used for questions on the POD codebase.
 
 Research or Create Feature:
     - [ ] Add sidebar that allows jumping to each function (if using procedural languages) or method (if using object-oriented languages).
