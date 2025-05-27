@@ -5,8 +5,8 @@ Future Plugins to add:
     - [O] neo-tree
     - [X] undo-tree
     - [X] indent_line
-    - [ ] lsp (see kickstart for inspiration)
-    - [ ] mason
+    - [X] lsp (see kickstart for inspiration)
+    - [X] mason
     - [ ] conform.nvim
     - [~] nvim-cmp ~ Not yet, want to try out without autocomplete.
     - [X] todo-comments.nvim
