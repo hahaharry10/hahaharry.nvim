@@ -157,6 +157,17 @@ local kw_q = { "QUESTION:" }
 --     filetypes = {"c", "cpp"},
 -- })
 
+-- Functions for keybindings `gv` and `gs`:
+function SplitGotoDeclaration(split_direction)
+    if( split_direction == "vertical" ) then
+        vim.cmd("vsplit")
+    elseif( split_direction == "horizontal" ) then
+        vim.cmd("split")
+    end
+
+    require('telescope.builtin').lsp_definitions()
+end
+
 wk.add({
     -- telescope:
     {
@@ -231,6 +242,8 @@ wk.add({
         { "gi", require('telescope.builtin').lsp_implementations, desc = "[G]oto [I]mplementation" },
         { "gd", require('telescope.builtin').lsp_definitions, desc = "[G]oto [D]efinition" },
         { "gD", vim.lsp.buf.declaration, desc = "[G]oto [D]eclaration" },
+        { "gv", function() SplitGotoDeclaration("vertical") end, desc = "[G]oto Declaration with [V]ertical Split"},
+        { "gs", function() SplitGotoDeclaration("horizontal") end, desc = "[G]oto Declaration with Horizontal [S]plit"},
         { "gO", require('telescope.builtin').lsp_document_symbols, desc = "Open Document Symbols" },
         { "gW", require('telescope.builtin').lsp_dynamic_workspace_symbols, desc = "Open Workspace Symbols" },
         { "gt", require('telescope.builtin').lsp_type_definitions, desc = "[G]oto [T]ype Definition" },
