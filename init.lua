@@ -207,6 +207,7 @@ wk.add({
         { "<leader>pp", function() require("todo-comments").jump_prev({ keywords = kw_p }) end, desc = "PASSED comment" },
         { "<leader>pf", function() require("todo-comments").jump_prev({ keywords = kw_f }) end, desc = "FAILED comment" },
         { "<leader>po", function() require("todo-comments").jump_prev({ keywords = kw_p_f }) end, desc = "PASSED or FAILED comment" },
+        { "<leader>pq", function() require("todo-comments").jump_prev({ keywords = kw_q }) end, desc = "QUESTION comment" },
         { "<leader>pa", function() require("todo-comments").jump_prev() end, desc = "highlighted comment" },
     },
 
