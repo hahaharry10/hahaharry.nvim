@@ -48,6 +48,8 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
+require'lspconfig'.clangd.setup{}
+
 -- opy to system clipboard:
 vim.schedule(function()
     vim.opt.clipboard = 'unnamedplus'
@@ -77,8 +79,8 @@ vim.keymap.set('x', 'z', '<C-d>', { desc = 'Down half a page', noremap = true })
 vim.keymap.set('x', 'Z', '<C-u>', { desc = 'Up half a page', noremap = true })
 vim.o.timeoutlen = 0
 
-local wk = require("which-key")
-local tele = require("telescope.builtin")
+vim.g.copilot_no_tab_map = true
+
 local todo = require("todo-comments")
 
 -- Todo-comment keyword combos: 
@@ -168,13 +170,51 @@ function SplitGotoDeclaration(split_direction)
     require('telescope.builtin').lsp_definitions()
 end
 
+-- Functions for Telescope split window keybindings:
+local tele = require("telescope.builtin")
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+
+local function open_with_split(prompt_bufnr, split_type)
+    local entry = action_state.get_selected_entry()
+    actions.close(prompt_bufnr)
+    if split_type == "vertical" then
+        vim.cmd("vsplit " .. entry.path)
+    elseif split_type == "horizontal" then
+        vim.cmd("split " .. entry.path)
+    end
+end
+
+local function custom_find_files()
+    require("telescope.builtin").find_files({
+        attach_mappings = function(_, map)
+            map("n", "<C-v>", function(prompt_bufnr) open_with_split(prompt_bufnr, "vertical") end)
+            map("n", "<C-s>", function(prompt_bufnr) open_with_split(prompt_bufnr, "horizontal") end)
+            return true
+        end,
+    })
+end
+
+local function custom_grep_string()
+    require("telescope.builtin").grep_string({
+        search = vim.fn.input("Grep > "),
+        attach_mappings = function(_, map)
+            map("n", "<C-v>", function(prompt_bufnr) open_with_split(prompt_bufnr, "vertical") end)
+            map("n", "<C-s>", function(prompt_bufnr) open_with_split(prompt_bufnr, "horizontal") end)
+            return true
+        end,
+    })
+end
+
+
+local wk = require("which-key")
 wk.add({
     -- telescope:
     {
         mode = {"n"},
         { "<leader>f", group = "Find..." },
-        { "<leader>ff", tele.find_files, desc = "Fuzzy find [f]iles" },
-        { "<leader>fg", function() tele.grep_string({ search = vim.fn.input("Grep > ") }) end, desc = "Fuzzy live [g]rep" },
+        { "<leader>ff", custom_find_files, desc = "Fuzzy find [f]iles" },
+        { "<leader>fg", custom_grep_string, desc = "Fuzzy live [g]rep" },
         { "<leader>fb",  tele.buffers, desc = "Telescope [b]uffers" },
         { "<leader>fh",  tele.help_tags, desc = "Telescope [h]elp tags" },
     },
@@ -292,7 +332,31 @@ wk.add({
         mode = {"n"},
         {"<leader>l", function() require("focus"):unfocus() end, desc = "Unfocus text" },
     },
+
+    -- Copilot keys:
+    {
+        mode = {"i"},
+        {"<S-Tab>", "<C-t>", desc = "Indentation tab" },
+    },
+    {
+        mode = {"n"},
+        {
+            "<C-C>",
+            function()
+                if vim.g.copilot_enabled == true then
+                    vim.g.copilot_enabled = false
+                    vim.notify("GitHub Copilot Disabled")
+                else
+                    vim.g.copilot_enabled = true
+                    vim.notify("GitHub Copilot Enabled")
+                end
+            end,
+            desc = "Toggle GitHub Copilot"
+        },
+    },
+
 }, { prefix = "<leader>" })
 
 vim.cmd.UndotreePersistUndo = true -- HACK: Unsure if this is right, but it seems to work.
 
+-- Output to the terminal hello
