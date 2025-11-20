@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
-require'lspconfig'.clangd.setup{}
+vim.lsp.enable('clangd')
 
 -- opy to system clipboard:
 vim.schedule(function()
@@ -80,8 +80,6 @@ vim.keymap.set('x', 'Z', '<C-u>', { desc = 'Up half a page', noremap = true })
 vim.o.timeoutlen = 0
 
 vim.g.copilot_no_tab_map = true
-
-local todo = require("todo-comments")
 
 -- Todo-comment keyword combos: 
 local kw_td = { "TODO:" }
