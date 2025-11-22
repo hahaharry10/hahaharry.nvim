@@ -333,10 +333,6 @@ wk.add({
 
     -- Copilot keys:
     {
-        mode = {"i"},
-        {"<S-Tab>", "<C-t>", desc = "Indentation tab" },
-    },
-    {
         mode = {"n"},
         {
             "<C-C>",

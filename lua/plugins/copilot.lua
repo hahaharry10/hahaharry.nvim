@@ -8,7 +8,7 @@ return {
                 auto_trigger = true, -- automatically show suggestions
                 debounce = 75,
                 keymap = {
-                    accept = "<Tab>", -- change to your preferred key
+                    accept = "<S-Tab>", -- change to your preferred key
                     accept_word = false,
                     accept_line = false,
                     next = "<M-n>",
