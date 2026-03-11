@@ -39,6 +39,18 @@ vim.opt.cursorline = true
 
 require("config.lazy")
 
+-- Auto-reload files changed outside of Neovim:
+vim.opt.autoread = true
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter', 'CursorHold', 'CursorHoldI' }, {
+    desc = 'Check if file changed on disk and reload',
+    group = vim.api.nvim_create_augroup('auto-reload', { clear = true }),
+    callback = function()
+        if vim.fn.mode() ~= 'c' then
+            vim.cmd('checktime')
+        end
+    end,
+})
+
 -- Highlight When Yanking:
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
@@ -311,14 +323,6 @@ wk.add({
     {
         mode = {"n"},
         {":", "q:a", desc = "Enter e[x]ecute mode" },
-    },
-
-    -- Terminal Emulator Options:
-    {
-        mode = {"n", "v"},
-        {"<leader>t", group = "[T]erminal emulator..." },
-        {"<leader>tv", ":vs | terminal<CR>", desc = "[v]ertical split" },
-        {"<leader>th", ":split | terminal<CR>", desc = "[h]orizontal split" },
     },
 
     -- Allow focus on selected text:
