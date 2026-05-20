@@ -27,14 +27,23 @@ return {
             },
         })
 
+        local vert_term = Terminal:new({ direction = "vertical",   hidden = true })
+        local horiz_term = Terminal:new({ direction = "horizontal", hidden = true })
+
         require("which-key").add({
             {
                 mode = { "n" },
                 { "<leader>t",  group = "[T]erminal..." },
-                { "<leader>tf", function() vim.cmd("ToggleTerm direction=float") end,         desc = "[f]loating terminal" },
-                { "<leader>tv", function() vim.cmd("2ToggleTerm direction=vertical") end,     desc = "[v]ertical split terminal" },
-                { "<leader>th", function() vim.cmd("3ToggleTerm direction=horizontal") end,   desc = "[h]orizontal split terminal" },
-                { "<leader>tc", function() claude_term:toggle() end,                          desc = "[c]laude" },
+                { "<leader>tf", function() vim.cmd("ToggleTerm direction=float") end, desc = "[f]loating terminal" },
+                { "<leader>tv", function()
+                    if horiz_term:is_open() then horiz_term:close() end
+                    vert_term:toggle(math.floor(vim.o.columns * 0.5))
+                end, desc = "[v]ertical split terminal" },
+                { "<leader>ts", function()
+                    if vert_term:is_open() then vert_term:close() end
+                    horiz_term:toggle()
+                end, desc = "[s]plit horizontal terminal" },
+                { "<leader>tc", function() claude_term:toggle() end, desc = "[c]laude" },
             },
         })
     end,

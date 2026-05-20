@@ -287,6 +287,8 @@ wk.add({
     {
         mode = {"n"},
         { "g", group = "LSP Actions..." },
+        { "gb", '<C-^>', desc = "[g]o to previous [b]uffer" },
+        { "gl", '<C-o>', desc = "[g]o back to previous [l]ine" },
         { "gR", vim.lsp.buf.rename, desc = "[R]e[n]ame" },
         { "ga", vim.lsp.buf.code_action, desc = "[G]oto Code [A]ction" },
         { "gr", require('telescope.builtin').lsp_references, desc = "[G]oto [R]eferences" },
@@ -353,6 +355,24 @@ wk.add({
         },
     },
 
+    -- vim-mark kesy:
+    {
+        mode = {"v"},
+        {'<leader>m', group = "[M]ark..." },
+        {'<leader>mm', '<Plug>MarkSet', desc = '[m]ark selection'} -- toggle a highlight on the selected text
+    },
+    {
+        mode = {"n"},
+        {'<leader>m', group = "[M]ark..." },
+        {'<leader>mm', '<Plug>MarkSet', desc = '[m]ark word under cursor'},           -- toggle a highlight on the word under the cursor
+        {'<leader>mr', '<Plug>MarkRegex', desc = '[r]egex mark'},                     -- highlight all text matching a regex pattern
+        {'<leader>mc', '<Plug>MarkClear', desc = '[c]lear mark under cursor'},        -- remove the highlight on the word under the cursor
+        {'<leader>mC', '<Plug>MarkAllClear', desc = '[C]lear all marks'},             -- remove all highlights in the buffer
+        {'<leader>mf', '<Plug>MarkSearchCurrentNext', desc = '[f]orward same mark'},  -- jump to next occurrence of the mark under the cursor
+        {'<leader>mb', '<Plug>MarkSearchCurrentPrev', desc = '[b]ackward same mark'}, -- jump to previous occurrence of the mark under the cursor
+        {'<leader>mn', '<Plug>MarkSearchAnyNext', desc = 'forward any mark'},         -- jump to next occurrence of any mark
+        {'<leader>mN', '<Plug>MarkSearchAnyPrev', desc = 'backward any mark'},        -- jump to previous occurrence of any mark
+    }
 }, { prefix = "<leader>" })
 
 vim.cmd.UndotreePersistUndo = true -- HACK: Unsure if this is right, but it seems to work.
