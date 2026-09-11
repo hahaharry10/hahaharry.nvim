@@ -20,6 +20,9 @@ return {
 
         -- Allows extra capabilities provided by blink.cmp
         { 'saghen/blink.cmp', dependencies = { 'saghen/blink.lib' } },
+
+        -- Provides the clangd configuration for ESP-IDF projects
+        'Aietes/esp32.nvim',
     },
     config = function()
         vim.api.nvim_create_autocmd('LspAttach', {
@@ -129,8 +132,20 @@ return {
         --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
         --  - settings (table): Override the default settings passed when initializing the server.
         --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+        -- ESP-IDF provides its own clangd (with the right --query-driver, sysroot and
+        -- compile_commands.json location), so let esp32.nvim build that config for us.
+        -- Falls back to the stock clangd config outside an ESP-IDF environment.
+        local clangd = {}
+        local ok_esp32, esp32 = pcall(require, 'esp32')
+        if ok_esp32 then
+            local ok_cfg, cfg = pcall(esp32.lsp_config)
+            if ok_cfg and type(cfg) == 'table' then
+                clangd = cfg
+            end
+        end
+
         local servers = {
-            clangd = {},
+            clangd = clangd,
             -- gopls = {},
             pyright = {},
             rust_analyzer = {},
@@ -159,7 +174,13 @@ return {
             },
         }
 
-        local ensure_installed = vim.tbl_keys(servers or {})
+        -- Never let Mason install clangd: it prepends its own bin directory to
+        -- PATH, so a Mason clangd shadows the Espressif one that the ESP-IDF
+        -- environment puts there, and esp32.nvim then falls back to a clangd
+        -- that cannot parse the Xtensa/RISC-V flags in compile_commands.json.
+        local ensure_installed = vim.tbl_filter(function(name)
+            return name ~= 'clangd'
+        end, vim.tbl_keys(servers or {}))
         vim.list_extend(ensure_installed, {
             'stylua', -- Used to format Lua code
         })
@@ -167,17 +188,19 @@ return {
 
         require('mason-lspconfig').setup {
             ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-            automatic_installation = false,
-            handlers = {
-                function(server_name)
-                    local server = servers[server_name] or {}
-                    -- This handles overriding only values explicitly passed
-                    -- by the server configuration above. Useful when disabling
-                    -- certain features of an LSP (for example, turning off formatting for ts_ls)
-                    server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-                    vim.lsp.enable(server)
-                end,
-            },
+            -- mason-lspconfig v2 dropped `handlers`; we register and enable the
+            -- servers ourselves below so the tables above are actually applied.
+            automatic_enable = false,
         }
+
+        -- Broadcast the blink.cmp capabilities to every server, then layer each
+        -- server's own overrides (from `servers`) on top of the lspconfig defaults.
+        vim.lsp.config('*', { capabilities = capabilities })
+        for server_name, server in pairs(servers) do
+            if not vim.tbl_isempty(server) then
+                vim.lsp.config(server_name, server)
+            end
+        end
+        vim.lsp.enable(vim.tbl_keys(servers))
     end
 }
